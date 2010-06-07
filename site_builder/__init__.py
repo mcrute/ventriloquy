@@ -16,7 +16,7 @@ from docutils.io import FileInput
 
 
 def get_template(name):
-     loader = jinja2.FileSystemLoader('templates')
+     loader = jinja2.FileSystemLoader('ventriloquy/templates')
      renderer = jinja2.Environment(loader=loader)
      return renderer.get_template(name)
 
