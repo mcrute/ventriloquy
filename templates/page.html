@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta name="google-site-verification" content="Ycqn8jLbKJrWCDs97nD20cjYEhFf875j1teoofSd6Sc" />
+<meta name="generator" content="Ventriloquy 0.1" />
+<meta name="author" content="Michael Crute" />
+<title>The Random Thoughts of a Programmer</title>
+<style type="text/css">@import url('/resources/site-min.css');</style>
+</head>
+<body>
+
+<div id="header">
+    <h1 class="headline"><a href="/">mike<span>.</span>crute<span>.org</span></a></h1>
+</div>
+
+<div id="contents">
+
+{% block contents %}
+{{ contents }}
+{% endblock %}
+
+</div>
+
+<div id="footer">
+{% if is_blog %}
+<div id="footer-blog">
+    <ul class="links">
+        <li><span class="label">Blog Links:</span></li>
+        <li><a href="archive">Archive</a></li>
+        <li><a href="tags">Tags</a></li>
+        <li><a href="feed">Atom Feed</a></li>
+    </ul>
+</div>
+{% endif %}
+
+<div id="footer-page">
+    <ul class="links">
+        <li><span class="label">Site Links:</span></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/personal_blog">Personal Blog</a></li>
+        <li><a href="/code">Code</a></li>
+        <li><a href="http://twitter.com/mcrute">Twitter</a></li>
+    </ul>
+
+    {% block update_date %}
+    <p class="updated"><span class="label">Page last updated:</span> {{ build_date }}</p>
+    {% endblock %}
+    <p class="copyright">Copyright &copy; 2010 Michael E. Crute &lt;<a href="mailto:mcrute@gmail.com">mcrute@gmail.com</a>&gt;. Contact me for other uses.</p>
+    <p class="poweredby">This site powered by <a href="http://www.vim.org">VIM</a>, <a href="http://docutils.sourceforge.net">ReStructuredText</a> and <a href="http://python.org">Python</a>.</p>
+</div>
+</div>
+
+</body>
+</html>

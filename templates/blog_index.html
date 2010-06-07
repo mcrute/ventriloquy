@@ -1,0 +1,18 @@
+{% extends "page.html" %}
+
+{% set is_blog = True %}
+
+{% block contents %}
+{% for post in posts %}
+<h1 class="title">{{ post.title }}</h1>
+<p><span class="label">Posted:</span> {{ post.pretty_date }}</span></p>
+{{ post.contents }}
+{% if not loop.last %}
+<hr />
+{% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block update_date %}
+    <p class="updated"><span class="label">Page last updated:</span> {{ posts[0].pretty_date }}</p>
+{% endblock %}

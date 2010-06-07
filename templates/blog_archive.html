@@ -1,0 +1,14 @@
+{% extends "page.html" %}
+
+{% set is_blog = True %}
+
+{% block contents %}
+{% for year, post_set in posts %}
+<h2>{{ year }}</h2>
+<ul>
+    {% for post in post_set %}
+    <li><a href="{{ post.filename|replace('.rst', '.html') }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "page.html" %}
+
+{% set is_blog = True %}
+
+{% block contents %}
+<h2>All Tags</h2>
+<p>
+{%- for tag, post_set in posts %}
+<a href="#{{ tag }}">{{ tag }}</a>
+{% endfor %}
+</p>
+
+
+{% for tag, post_set in posts %}
+<h2 id="{{ tag }}">{{ tag }}</h2>
+<ul>
+    {% for post in post_set %}
+    <li><a href="{{ post.filename|replace('.rst', '.html') }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}
