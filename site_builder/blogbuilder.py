@@ -8,6 +8,7 @@ Blog Builder
 """
 
 import os
+import json
 import operator
 from datetime import datetime
 from collections import defaultdict
@@ -16,12 +17,10 @@ from blog import load_post_index
 from feeds import Atom1Feed
 
 
-def build_feed(output_dir, post_index):
+def build_feed(output_dir, post_index, title, url, feed_url):
     page_name = os.path.join(output_dir, 'feed.atom')
-    feed = Atom1Feed(post_index, "The Random Thoughts of a Programmer",
-                     "http://mike.crute.org/blog/feed",
-                     post_index[0].post_date,
-                     "http://mike.crute.org/blog")
+    feed = Atom1Feed(post_index, title, feed_url,
+                     post_index[0].post_date, url)
 
     open(page_name, 'w').write(feed.get_feed())
 
@@ -64,6 +63,8 @@ def build_index(output_dir, post_index):
 
 
 def build_blog(base_dir, output_dir):
+    config = json.load(open(os.path.join(base_dir, 'blog.cfg')))
+
     post_index = load_post_index(base_dir)
     post_index.sort(key=operator.attrgetter('post_date'), reverse=True)
 
@@ -84,5 +85,6 @@ def build_blog(base_dir, output_dir):
 
     build_index(output_dir, post_index)
     build_archive(output_dir, post_index)
-    build_feed(output_dir, post_index)
     build_tags(output_dir, post_index)
+    build_feed(output_dir, post_index,
+                config['title'], config['blog_url'], config['feed_url'])
