@@ -2,8 +2,7 @@
 """
 Sitemap Generator
 
-@author: Mike Crute (mcrute@ag.com)
-@organization: American Greetings Interactive
+@author: Mike Crute (mike@crute.us)
 @date: June 05, 2010
 """
 

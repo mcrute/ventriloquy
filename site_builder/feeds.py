@@ -2,8 +2,7 @@
 """
 Atom Feed Writer
 
-@author: Mike Crute (mcrute@ag.com)
-@organization: American Greetings Interactive
+@author: Mike Crute (mike@crute.us)
 @date: June 04, 2010
 """
 

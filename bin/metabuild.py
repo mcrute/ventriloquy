@@ -3,8 +3,7 @@
 """
 Website Build Script
 
-@author: Mike Crute (mcrute@ag.com)
-@organization: American Greetings Interactive
+@author: Mike Crute (mike@crute.us)
 @date: June 03, 2010
 
 TODO:
