@@ -7,17 +7,15 @@ Blog Post Builder
 """
 
 import os
-from functools import wraps
 from datetime import datetime
 
-# Docutils imports, crazy yo
 from docutils import nodes
-from docutils.core import Publisher, publish_string
+from docutils.parsers import rst
+from docutils.core import Publisher
+from docutils.readers import standalone
 from docutils.transforms import Transform
 from docutils.io import NullOutput, FileInput
-from docutils.parsers.rst import Parser as RSTParser
-from docutils.writers.html4css1 import Writer as HTMLWriter
-from docutils.readers.standalone import Reader as StandaloneReader
+from docutils.writers import html4css1 as html
 
 
 class BlogMetaTransform(Transform):
@@ -34,9 +32,7 @@ class BlogMetaTransform(Transform):
     def __init__(self, *args, **kwargs):
         Transform.__init__(self, *args, **kwargs)
 
-        self.meta = self.document.blog_meta = {
-            'tags': [],
-            }
+        self.meta = self.document.blog_meta = {"tags": []}
 
     def apply(self):
         docinfo = None
@@ -50,7 +46,7 @@ class BlogMetaTransform(Transform):
                 self.document.remove(node)
 
             if isinstance(node, nodes.title):
-                self.meta['title'] = unicode(node[0])
+                self.meta["title"] = unicode(node[0])
                 self.document.remove(node)
 
         # And one to process the docinfo
@@ -65,23 +61,23 @@ class BlogMetaTransform(Transform):
                 self._handle_field(node)
 
     def _handle_author(self, node):
-        self.meta['author'] = Author(node[0]['name'], node[0]['refuri'])
+        self.meta["author"] = Author(node[0]["name"], node[0]["refuri"])
 
     def _handle_date(self, node):
         raw_date = unicode(node[0])
-        self.meta['post_date'] = datetime.strptime(raw_date,
-                                                    '%a %b %d %H:%M:%S %Y')
+        self.meta["post_date"] = datetime.strptime(raw_date,
+                                                    "%a %b %d %H:%M:%S %Y")
 
     def _handle_field(self, node):
         name = node[0][0]
         value = unicode(node[1][0][0])
 
-        if name == 'Tag':
-            self.meta['tags'].append(value)
+        if name == "Tag":
+            self.meta["tags"].append(value)
 
 
 
-class BlogPostReader(StandaloneReader):
+class BlogPostReader(standalone.Reader):
     """
     Post reader for blog posts.
 
@@ -90,9 +86,7 @@ class BlogPostReader(StandaloneReader):
     """
 
     def get_transforms(self):
-        return StandaloneReader.get_transforms(self) + [
-            BlogMetaTransform,
-            ]
+        return standalone.Reader.get_transforms(self) + [BlogMetaTransform]
 
 
 class Author(object):
@@ -104,11 +98,11 @@ class Author(object):
         self.name = name
         self.email = email
 
-        if email.startswith('mailto:'):
-            self.email = email[len('mailto:'):]
+        if email.startswith("mailto:"):
+            self.email = email[len("mailto:"):]
 
     def __str__(self):
-        return '{0} <{1}>'.format(self.name, self.email)
+        return "{0} <{1}>".format(self.name, self.email)
 
 
 class BlogPost(object):
@@ -150,29 +144,29 @@ class BlogPost(object):
         """
         pub = Publisher(destination_class=NullOutput,
                         source=FileInput(source_path=filename),
-                        reader=BlogPostReader(), writer=HTMLWriter(),
-                        parser=RSTParser())
+                        reader=BlogPostReader(), writer=html.Writer(),
+                        parser=rst.Parser())
 
         pub.get_settings() # This is not sane.
         pub.settings.traceback = True # Damnit
         pub.publish()
 
         meta = pub.document.blog_meta
-        post = cls(meta['title'], meta['post_date'], meta['author'],
-                   meta['tags'], pub.writer.parts['html_body'])
+        post = cls(meta["title"], meta["post_date"], meta["author"],
+                   meta["tags"], pub.writer.parts["html_body"])
 
         post.filename = filename
 
         return post
 
 
-def load_post_index(directory='.'):
+def load_post_index(directory="."):
     """
     Scan the current directory for rst files and build an index.
     """
     posts = []
     for filename in os.listdir(directory):
-        if not filename.endswith('.rst'):
+        if not filename.endswith(".rst"):
             continue
 
         filename = os.path.join(directory, filename)
